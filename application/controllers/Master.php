@@ -370,7 +370,7 @@ class Master extends CI_Controller
 					$datax['data'][]=[
 						$d->id_jam,
 						$d->kode_jam,
-						$d->range_jam_mulai.' - '.$d->range_jam_selesai,
+						$d->jam_mulai.' - '.$d->jam_selesai,
 						'<button class="btn btn-info" onclick="do_view(\''.$d->id_jam.'\')"><i class="fa fa-info-circle"></i></button><button class="btn btn-danger" onclick="do_delete(\''.$d->id_jam.'\')"><i class="fa fa-trash"></i></button>',
 					];
 					$no++;
@@ -384,9 +384,9 @@ class Master extends CI_Controller
                         $datax = [
                             'id' => $d->id_jam,
                             'kode_jam' => $d->kode_jam,
-                            'range_jam' => $d->range_jam_mulai.' - '.$d->range_jam_selesai,
-                            'range_jam_mulai' => $d->range_jam_mulai,
-                            'range_jam_selesai' => $d->range_jam_selesai,
+                            'range_jam' => $d->jam_mulai.' - '.$d->jam_selesai,
+                            'jam_mulai' => $d->jam_mulai,
+                            'jam_selesai' => $d->jam_selesai,
                         ];
                     }
                 }

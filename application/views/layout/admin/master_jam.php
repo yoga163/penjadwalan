@@ -277,8 +277,8 @@
             dataType: "json",
             success: function(data){
                 $('#data_kode_edit').val(data['kode_jam'])
-                $('#data_range_jam_mulai_edit').val(data['range_jam_mulai'])
-                $('#data_range_jam_selesai_edit').val(data['range_jam_selesai'])
+                $('#data_range_jam_mulai_edit').val(data['jam_mulai'])
+                $('#data_range_jam_selesai_edit').val(data['jam_selesai'])
                 $('#data_id_edit').val(data['id'])
             }
         })
