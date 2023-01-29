@@ -24,7 +24,6 @@ class Jadwal extends CI_Controller
                         $d->id_jadwal,
                         $this->formatter->getDateMonthFormatUser($d->hari),
                         $d->jam_mulai.'-'.$d->jam_selesai,
-                        $d->nama_kelas,
                         $d->nama_mapel,
                     ];
                     $no++;
