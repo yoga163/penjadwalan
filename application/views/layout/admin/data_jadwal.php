@@ -63,6 +63,7 @@
                                                     <th>No</th>
                                                     <th>Hari</th>
                                                     <th>Jam</th>
+                                                    <th>Kelas</th>
                                                     <th>Mapel</th>
                                                 </tr>
                                             </thead>

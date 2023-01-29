@@ -22,7 +22,12 @@
     </div>
     <div class="col-lg-7 d-none d-lg-block">
         <div id="auth-right">
-
+            <div class="h-100 d-flex align-items-center justify-content-center">
+                <div class="text-center text-lg fs-4">
+                    <h2 class=" text-light">Sistem Penjadwalan Otomatis</h2>
+                    <h3 class=" text-light">SMK N 1 Batang</h3>
+                </div>
+            </div>
         </div>
     </div>
 </div>

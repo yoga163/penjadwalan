@@ -92,8 +92,31 @@
                         </li>
                     </ul>
                 </li>
+                <hr>
+                <li class="sidebar-item  ">
+                    <a data-bs-toggle="modal" data-bs-target="#tambah" class='sidebar-link'>
+                        <i class="bi bi-grid-fill"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
 
             </ul>
         </div>
     </div>
 </div>
+
+<!-- modal Tambah -->
+        <div class="modal fade" id="tambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Yakin Akan Logout?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a href="<?= base_url() ?>login/logout" class="btn btn-danger">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>

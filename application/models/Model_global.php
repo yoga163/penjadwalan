@@ -40,21 +40,21 @@ class Model_global extends CI_Model
         $populasi =  $this->inisialisasi($data['jml_populasi'],$data['date'],$mpl,$data['kelas'],$data['jam']);
         for($i =0;$i <= $data['jml_generasi'];$i++){
             $fitness = $this->HitungFitness($data['jml_populasi'],$populasi,$data);
-            $selected = $this->rouletteWheelSelection($populasi,$fitness);
-            $new_generation=$this->onePointCrossover($selected[$i],$selected[$i+1],$data['crossover']);
-            // Perform mutation on the offspring
-            $new_fitness_values = $this->mutasi_coba($new_generation, $data['mutasi'], $hari,$mpl,$data['kelas'],$data['jam'],$data);
+            // $selected = $this->rouletteWheelSelection($populasi,$fitness);
+            $this->Seleksi($fitness,$data['jml_populasi'],$populasi);
+                // $crosover_result=$this->onePointCrossover($selected[$i],$selected[$i+1],$data['crossover']);
+            $this->StartCrossOver($data['jml_populasi'],$data['crossover'],$populasi,$data);
             $new_generation = $this->individu;
+            // // Perform mutation on the offspring
+            $new_fitness_values = $this->mutasi_coba($new_generation, $data['mutasi'], $data['date'],$mpl,$data['kelas'],$data['jam'],$data);
             $best_chromosome = $this->evaluate($new_generation, $new_fitness_values);
             if ($best_chromosome != null) {
             // Jika sudah, kembalikan individu terbaik sebagai solusi terbaik
                 return $best_chromosome;
-            }else{
-                $populasi = $this->reproduce($selected,$data['mutasi'],$data['crossover'], $hari,$mpl,$data['kelas'],$data['jam'],$data);
-                $fitness = $new_fitness_values;
+                break;
             }
         }
-        return $best_chromosome;
+        // return $best_chromosome;
     }
     
     public function inisialisasi($jml_populasi,$hari,$mapel,$kelas,$jam){
@@ -78,7 +78,7 @@ class Model_global extends CI_Model
         $hari=[1,2,3,4,5];
         $penalty = 0;
         $jml_mapel = count($data['mapel']);
-        $jml_hari = count($hari);
+        $jml_hari = count($data['date']);
         $jml_jam = count($data['jam']);
         for ($i = 0; $i < ($jml_mapel); $i++){
             $mapel = $individu[$count_ind][$i][0];
@@ -95,20 +95,10 @@ class Model_global extends CI_Model
                 if($hari_i == $hari_iB && $jam == $jamB){
                     $penalty +=1;
                 }
-                if($hari_i == $hari_iB && $jam == $jamB && $mapel == $mapelB){
-                    $penalty +=1;
-                }
-                if($hari_i == $hari_iB && $mapel == $mapelB){
-                    $penalty +=1;
-                }
-
-                if($hari_i == 6 && $hari_i == 7){
-                    $penalty +=1;
-                }
             }  
         }
       
-        $fitness = 1/(1+($penalty/11));
+        $fitness = 1/(1+($penalty/$jml_mapel));
         return $fitness;
     }
     public function HitungFitness($jumlah_populasi,$individu,$data)
@@ -124,7 +114,7 @@ class Model_global extends CI_Model
     function rouletteWheelSelection($population, $fitness_values) {
         // Hitung total nilai fitness dari seluruh individu
         $total_fitness = array_sum($fitness_values);
-      
+        
         // Tentukan ruang untuk setiap individu pada roda keberuntungan
         $probabilities = array();
         foreach ($fitness_values as $fitness) {
@@ -202,7 +192,6 @@ class Model_global extends CI_Model
     //     return array($new_chromosome1, $new_chromosome2);
     // }
     function onePointCrossover($chromosome1, $chromosome2,$crossover) {
-
         // Inisialisasi array anak
         $child1 = array();
         $child2 = array();
@@ -210,11 +199,12 @@ class Model_global extends CI_Model
         for ($i = 0; $i < count($chromosome1); $i++) {
             $cr = mt_rand(0, mt_getrandmax() - 1) / mt_getrandmax();
             if (floatval($cr) < floatval($crossover)) {
+                $cutoff_point = rand(0, count($chromosome1) - 1);
+                $child1[$i] = $chromosome1[$i+1];
+                $child2[$i+1] = $chromosome2[$i];
+            }else{
                 $child1[$i] = $chromosome1[$i];
                 $child2[$i] = $chromosome2[$i];
-            } else {
-                $child1[$i] = $chromosome2[$i];
-                $child2[$i]= $chromosome1[$i];
             }
           }
           return array($child1, $child2);
@@ -241,7 +231,7 @@ class Model_global extends CI_Model
                 // var_dump($this->induk);
                 //penentuan jadwal baru dari awal sampai titik pertama
                 for ($j = 0; $j < $a; $j++) {
-                    for ($k = 0; $k < 4; $k++) {                        
+                    for ($k = 0; $k < 3; $k++) {                        
                         $individu_baru[$i][$j][$k]     = $individu[$this->induk[$i]][$j][$k];
                         $individu_baru[$i + 1][$j][$k] = $individu[$this->induk[$i + 1]][$j][$k];
                     }
@@ -249,7 +239,7 @@ class Model_global extends CI_Model
                 
                 //Penentuan jadwal baru dari titik pertama sampai titik kedua
                 for ($j = $a; $j < $b; $j++) {
-                    for ($k = 0; $k < 4; $k++) {
+                    for ($k = 0; $k < 3; $k++) {
                         $individu_baru[$i][$j][$k]     = $individu[$this->induk[$i + 1]][$j][$k];
                         $individu_baru[$i + 1][$j][$k] = $individu[$this->induk[$i]][$j][$k];
                     }
@@ -257,7 +247,7 @@ class Model_global extends CI_Model
                 
                 //penentuan jadwal baru dari titik kedua sampai akhir
                 for ($j = $b; $j < $jml_mapel; $j++) {
-                    for ($k = 0; $k < 4; $k++) {
+                    for ($k = 0; $k < 3; $k++) {
                         $individu_baru[$i][$j][$k]     = $individu[$this->induk[$i]][$j][$k];
                         $individu_baru[$i + 1][$j][$k] = $individu[$this->induk[$i + 1]][$j][$k];
                     }
@@ -265,7 +255,7 @@ class Model_global extends CI_Model
             } else { 
                 //Ketika nilai random lebih dari nilai probabilitas pertukaran, maka jadwal baru sama dengan jadwal terpilih
                 for ($j = 0; $j < $jml_mapel; $j++) {
-                    for ($k = 0; $k < 4; $k++) {
+                    for ($k = 0; $k < 3; $k++) {
                         $individu_baru[$i][$j][$k]     = $individu[$this->induk[$i]][$j][$k];
                         $individu_baru[$i + 1][$j][$k] = $individu[$this->induk[$i + 1]][$j][$k];
                     }
@@ -276,7 +266,7 @@ class Model_global extends CI_Model
         $jml_mapel = count($data['mapel']);
         for ($i = 0; $i < $populasi; $i += 2) {
           for ($j = 0; $j < $jml_mapel ; $j++) {
-            for ($k = 0; $k < 4; $k++) {
+            for ($k = 0; $k < 3; $k++) {
                 $this->individu[$i][$j][$k] = $individu_baru[$i][$j][$k];
                 $this->individu[$i + 1][$j][$k] = $individu_baru[$i + 1][$j][$k];
             }
@@ -285,7 +275,6 @@ class Model_global extends CI_Model
     }
     // Function to perform mutation
     function mutasi_coba($individual, $mutation_rate, $hari,$mapel,$kelas,$jam,$data) {
-
         for ($i = 0; $i < count($individual); $i++) {
             for ($j = 0; $j < count($mapel); $j++) {
                 // Check if the class should be mutated
@@ -294,22 +283,19 @@ class Model_global extends CI_Model
                    $this->individu[$i][$j][0] = $mapel[$j];
                    $this->individu[$i][$j][1] = $hari[array_rand($hari)];
                    $this->individu[$i][$j][2] = $jam[array_rand($jam)];
-                }else{
-                    $this->individu[$i][$j][0] = $individual[$i][$j][0];
-                    $this->individu[$i][$j][1] = $individual[$i][$j][1];
-                    $this->individu[$i][$j][2] = $individual[$i][$j][2];
                 }
-            }
+            };
             $fitness[$i]=$this->CekFitness($i,$this->individu,$data);
         }
         return $fitness;
     }
-    function evaluate($generation, $fitness_values) {
+    function evaluate($generation, $fitness_values) {      
         // Inisialisasi indeks individu terbaik dengan 0
         $best_chromosome_index = 0;
         // Cari indeks individu terbaik dari seluruh individu di generasi
         for ($i = 1; $i < count($generation); $i++) {
-          if ($fitness_values[$i] > $fitness_values[$best_chromosome_index]) {
+          if ($fitness_values[$i] == 1) {
+           
             $best_chromosome_index = $i;
           }
         }

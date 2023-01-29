@@ -82,9 +82,10 @@ class Model_master extends CI_Model
 	}
 	// Data Jadwal
 	public function getJadwal(){
-		$this->db->select('dt_j.*,mpl.nama as nama_mapel,jm.jam_mulai,jm.jam_selesai');
+		$this->db->select('dt_j.*,mpl.nama as nama_mapel,jm.jam_mulai,jm.jam_selesai,kls.nama as nama_kelas');
 		$this->db->from('data_jadwal as dt_j');
 		$this->db->join('master_mapel as mpl','mpl.kode_mapel = dt_j.mapel','left');
+		$this->db->join('master_kelas as kls','kls.kode_kelas = dt_j.kelas','left');
 		$this->db->join('master_jam as jm','jm.kode_jam = dt_j.jam','left');
 		$this->db->order_by('dt_j.hari','asc');
 		$this->db->order_by('dt_j.jam','asc');

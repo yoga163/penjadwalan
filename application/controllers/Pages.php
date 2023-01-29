@@ -11,9 +11,15 @@ class Pages extends CI_Controller
 
     public function index()
     {
+        $guru = $this->model_master->getListGuruArray();
+        $mapel = $this->model_master->getListMapelArray();
+        $ruang = $this->model_master->getListRuangArray();
         $data = [
-            'nama' => 'Contoh',
+            'nama' => $this->session->userdata('ses_kar'),
             'title' => 'Dashboard',
+            'jml_guru' => count($guru),
+            'jml_mapel' => count($mapel),
+            'jml_ruang' => count($ruang),
         ];
         $this->load->view('_partial/main/header', $data);
         $this->load->view('_partial/main/sidebar', $data);
@@ -24,7 +30,7 @@ class Pages extends CI_Controller
     {
         $data = [
             'title' => 'Master Kelas',
-            'nama' => 'Contoh',
+            'nama' => $this->session->userdata('ses_kar'),
         ];
         $this->load->view('_partial/main/header', $data);
         $this->load->view('_partial/main/sidebar', $data);
@@ -35,7 +41,7 @@ class Pages extends CI_Controller
     {
         $data = [
             'title' => 'Master Mata Pelajaran',
-            'nama' => 'Contoh',
+            'nama' => $this->session->userdata('ses_kar'),
         ];
         $this->load->view('_partial/main/header', $data);
         $this->load->view('_partial/main/sidebar', $data);
@@ -46,7 +52,7 @@ class Pages extends CI_Controller
     {
         $data = [
             'title' => 'Master Guru',
-            'nama' => 'Contoh',
+            'nama' => $this->session->userdata('ses_kar'),
         ];
         $this->load->view('_partial/main/header', $data);
         $this->load->view('_partial/main/sidebar', $data);
@@ -57,7 +63,7 @@ class Pages extends CI_Controller
     {
         $data = [
             'title' => 'Master Ruang',
-            'nama' => 'Contoh',
+            'nama' => $this->session->userdata('ses_kar'),
         ];
         $this->load->view('_partial/main/header', $data);
         $this->load->view('_partial/main/sidebar', $data);
@@ -68,7 +74,7 @@ class Pages extends CI_Controller
     {
         $data = [
             'title' => 'Master Jam',
-            'nama' => 'Contoh',
+            'nama' => $this->session->userdata('ses_kar'),
         ];
         $this->load->view('_partial/main/header', $data);
         $this->load->view('_partial/main/sidebar', $data);
@@ -79,7 +85,7 @@ class Pages extends CI_Controller
     {
         $data = [
             'title' => 'Generate Jadwal',
-            'nama' => 'Contoh',
+            'nama' => $this->session->userdata('ses_kar'),
         ];
         $this->load->view('_partial/main/header', $data);
         $this->load->view('_partial/main/sidebar', $data);
@@ -90,7 +96,7 @@ class Pages extends CI_Controller
     {
         $data = [
             'title' => 'Generate Pengawas',
-            'nama' => 'Contoh',
+            'nama' => $this->session->userdata('ses_kar'),
         ];
         $this->load->view('_partial/main/header', $data);
         $this->load->view('_partial/main/sidebar', $data);
@@ -101,7 +107,7 @@ class Pages extends CI_Controller
     {
         $data = [
             'title' => 'Generate Jadwal',
-            'nama' => 'Contoh',
+            'nama' => $this->session->userdata('ses_kar'),
         ];
         $this->load->view('_partial/main/header', $data);
         $this->load->view('_partial/main/sidebar', $data);
