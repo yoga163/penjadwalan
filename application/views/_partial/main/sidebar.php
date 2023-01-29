@@ -94,7 +94,7 @@
                 </li>
                 <hr>
                 <li class="sidebar-item  ">
-                    <a data-bs-toggle="modal" data-bs-target="#tambah" class='sidebar-link'>
+                    <a data-bs-toggle="modal" data-bs-target="#logout" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Logout</span>
                     </a>
@@ -105,8 +105,8 @@
     </div>
 </div>
 
-<!-- modal Tambah -->
-        <div class="modal fade" id="tambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- modal logout -->
+        <div class="modal fade" id="logout" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
