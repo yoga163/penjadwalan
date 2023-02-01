@@ -86,7 +86,7 @@
                 <p>
                  Sistem Penjadwalan Otomatis
                  <br>
-                 SMK N Batang
+                 SMKN 1 Batang
                 </p>
               </div>
             </div>

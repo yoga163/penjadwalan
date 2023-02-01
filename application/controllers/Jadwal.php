@@ -23,27 +23,26 @@ class Jadwal extends CI_Controller
                     $datax['data'][]=[
                         $d->id_jadwal,
                         $this->formatter->getDateMonthFormatUser($d->hari),
+                        $d->nama_kelas,
                         $d->jam_mulai.'-'.$d->jam_selesai,
                         $d->nama_mapel,
                     ];
                     $no++;
 				}
 				echo json_encode($datax);
-            } elseif ($usage == 'view_one') {
-                $id = $this->input->post('id');
-                if($id){
-                    $data=$this->model_master->getJadwalId($id);
-                    foreach ($data as $d) {
-						$hari = explode(";",$d->hari);
-                    	$hari = $this->formatter->getFormatManyDays($hari);
+            } elseif ($usage == 'view') {
+                    $table='';
+                    $no=1;
+                    $data=$this->model_master->getJadwalArray();
+                    foreach ($data as $key => $d) {
+                        $table .= '<tr>
+                                    <td>'.$no++.'</td>
+                                    <td>'.$d['hari'].'</td>
+                                </tr>';
                         $datax = [
-                            'id' => $d->id_kelas,
-                            'kode_kelas' => $d->kode_kelas,
-                            'nama' => $d->nama,
-                            'kondisi' => $d->kondisi,
+                            'table' => $table,
                         ];
                     }
-                }
                 echo json_encode($datax);
             }
         }
@@ -75,7 +74,7 @@ class Jadwal extends CI_Controller
             'jml_generasi'=>$jml_generasi,
 
         ];
-        $data_input = $this->model_global->generate_jadwal($data);
+        $data_input = $this->model_global2->generate_jadwal($data);
         if($data_input){
             $this->db->empty_table('data_jadwal');
             foreach($data_input as $d_i){
@@ -83,7 +82,7 @@ class Jadwal extends CI_Controller
                     'mapel' => $d_i[0],
                     'hari' => $d_i[1],
                     'jam' => $d_i[2],
-                    // 'kelas' => $d_i[3],
+                    'kelas' => $d_i[3],
                     'tgl_mulai' => $start,
                     'tgl_selesai' => $end,
                 ];

@@ -35,15 +35,15 @@
                                         <input type="number" name="jml_populasi" value="50" class="form-control" step=".01">
                                     </div>
                                     <div class="form-group">
-                                        <label>Probabilitas Crossover</label>
+                                        <label>Probabilitas Crossover (0-1)</label>
                                         <input type="number" name="probabilitas_crossover" value="0.70" class="form-control" step=".01" min="0">
                                     </div>
                                     <div class="form-group">
-                                        <label>Probailitas Mutasi</label>
+                                        <label>Probailitas Mutasi (0-1)</label>
                                         <input type="number" name="probabilitas_mutasi" value="0.20" class="form-control" step=".01" min="0">
                                     </div>
                                     <div class="form-group">
-                                        <label>Jumlah Generasi</label>
+                                        <label>Jumlah Generasi (Jumlah Iterasi)</label>
                                         <input type="number" name="jml_generasi" value="800" class="form-control" step=".01">
                                     </div>
                                 </form>

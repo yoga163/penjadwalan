@@ -40,19 +40,25 @@
                                         <input type="number" name="jml_populasi" value="50" class="form-control" step=".01">
                                     </div>
                                     <div class="form-group">
-                                        <label>Probabilitas Crossover</label>
+                                        <label>Probabilitas Crossover (0-1)</label>
                                         <input type="number" name="probabilitas_crossover" value="0.70" class="form-control" step=".01" min="0">
                                     </div>
                                     <div class="form-group">
-                                        <label>Probailitas Mutasi</label>
+                                        <label>Probailitas Mutasi (0-1)</label>
                                         <input type="number" name="probabilitas_mutasi" value="0.20" class="form-control" step=".01" min="0">
                                     </div>
                                     <div class="form-group">
-                                        <label>Jumlah Generasi</label>
+                                        <label>Jumlah Generasi (Jumlah Iterasi)</label>
                                         <input type="number" name="jml_generasi" value="800" class="form-control" step=".01">
                                     </div>
                                 </form>
-                                <button class="btn btn-primary" onclick="do_add()"><i class="fa fa-plus"></i> Proses</button>
+                                <div class="row" id="basic-table">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-primary" onclick="do_add()"><i class="fa fa-plus"></i> Proses</button>
+                                    </div>
+                                    <div class="col-md-6 d-flex justify-content-end">
+                                        <button class="btn btn-info" onclick="do_view()"><i class="fa fa-magnifying-glass"></i> Lihat Jadwal</button>
+                                    </div>
                             </div>
                             <div class="card-content">
                                 <div class="card-body">
@@ -62,8 +68,8 @@
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Hari</th>
+                                                    <th>Kelas</th>
                                                     <th>Jam</th>
-                                                    <!-- <th>Kelas</th> -->
                                                     <th>Mapel</th>
                                                 </tr>
                                             </thead>
@@ -106,22 +112,28 @@
             </div>
         </div>
         <!-- modal View -->
-        <div class="modal fade" id="view" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal modal-lg fade" id="view" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Data</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Detail Jadwal</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="number" id="id_mapel" hidden>
-                        <div>
-                            <label>Kode Mapel</label>
-                            <h5 id="kode_mapel"></h5>
-                        </div>
-                        <div>
-                            <label>Nama Mapel</label>
-                            <h5 id="nama"></h5>
+                        <div class="table-responsive">
+                            <table class="table table-lg" id="jadwal">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Hari</th>
+                                        <th>Kelas</th>
+                                        <th>Jam</th>
+                                        <th>Mapel</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -270,15 +282,11 @@
     function do_view(id){
         $('#view').modal('show')
         $.ajax({
-            url: "<?php echo base_url('jadwal/data_jadwal/view_one')?>",
+            url: "<?php echo base_url('jadwal/data_jadwal/view')?>",
             type: 'POST',
-            data: {id:id},
             dataType: "json",
             success: function(data){
-                console.log(data)
-                $('#kode_mapel').html(data['kode_mapel'])
-                $('#nama').html(data['nama'])
-                $('#id_mapel').val(data['id'])
+                $('#jadwal').append(data['table'])
             }
         })
     }
