@@ -44,7 +44,7 @@
                                         <input type="number" name="probabilitas_crossover" value="0.70" class="form-control" step=".01" min="0">
                                     </div>
                                     <div class="form-group">
-                                        <label>Probailitas Mutasi (0-1)</label>
+                                        <label>Probabilitas Mutasi (0-1)</label>
                                         <input type="number" name="probabilitas_mutasi" value="0.20" class="form-control" step=".01" min="0">
                                     </div>
                                     <div class="form-group">
@@ -112,7 +112,7 @@
             </div>
         </div>
         <!-- modal View -->
-        <div class="modal modal-lg fade" id="view" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal modal-xl fade" id="view" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -129,6 +129,7 @@
                                         <th>Kelas</th>
                                         <th>Jam</th>
                                         <th>Mapel</th>
+                                        <th>Detail</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -138,7 +139,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" onclick="view_edit()" class="btn btn-primary"><i class="fa fa-pen"></i>Edit</button>
+                        <!-- <button type="button" onclick="view_edit()" class="btn btn-primary"><i class="fa fa-pen"></i>Edit</button> -->
                     </div>
                 </div>
             </div>

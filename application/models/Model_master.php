@@ -108,11 +108,13 @@ class Model_master extends CI_Model
 	}
 	// Data Pengawas
 	public function getPengawas(){
-		$this->db->select('dt_p.*,gr.nama as nama_guru,ruang.nama as nama_ruang');
+		$this->db->select('dt_p.*,gr.nama as nama_guru,ruang.nama as nama_ruang,kls.nama as nama_kelas');
 		$this->db->from('data_pengawas as dt_p');
 		$this->db->join('master_ruang as ruang','ruang.kode_ruang = dt_p.ruang','left');
 		$this->db->join('master_guru as gr','gr.kode_guru = dt_p.guru','left');
+		$this->db->join('master_kelas as kls','kls.kode_kelas = dt_p.kelas','left');
 		$this->db->order_by('dt_p.ruang','asc');
+		// $this->db->order_by('dt_p.kelas','asc');
 		return $this->db->get()->result();
 	}
 	public function getPengawasId($id){

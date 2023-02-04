@@ -39,7 +39,7 @@
                                         <input type="number" name="probabilitas_crossover" value="0.70" class="form-control" step=".01" min="0">
                                     </div>
                                     <div class="form-group">
-                                        <label>Probailitas Mutasi (0-1)</label>
+                                        <label>Probabilitas Mutasi (0-1)</label>
                                         <input type="number" name="probabilitas_mutasi" value="0.20" class="form-control" step=".01" min="0">
                                     </div>
                                     <div class="form-group">
@@ -56,6 +56,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
+                                                    <th>Kelas</th>
                                                     <th>Ruang</th>
                                                     <th>Pengawas</th>
                                                 </tr>

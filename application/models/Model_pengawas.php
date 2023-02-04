@@ -22,7 +22,10 @@ class Model_pengawas extends CI_Model
         $crosover=[];
         $guru= $this->model_master->getListGuruArray();
         $ruangs= $this->model_master->getListRuangArray();
-        $jadwal = ['mapel','hari','kelas','jam'];
+        $kelas= $this->model_master->getListKelasArray();
+        foreach($kelas as $kls){
+            $data['kelas'][]=$kls['kode_kelas'];
+        }
         foreach($ruangs as $ruang){
             $data['ruang'][]=$ruang['kode_ruang'];
         }
@@ -34,7 +37,12 @@ class Model_pengawas extends CI_Model
                 $rg[] = $data['ruang'][$key];
             }
         }
-        $populasi =  $this->inisialisasi($data['jml_populasi'],$data['guru'],$rg);
+        foreach($data['kelas'] as $key => $kls){
+            for($i=0;$i<(12);$i++){
+                $kl[] = $data['kelas'][$key];
+            }
+        }
+        $populasi =  $this->inisialisasi($data['jml_populasi'],$data['guru'],$rg,$kl);
         for($i =0;$i < $data['jml_generasi'];$i++){
             $fitness = $this->HitungFitness($data['jml_populasi'],$populasi,$data);
             $selected = $this->rouletteWheelSelection($populasi,$fitness);
@@ -44,7 +52,7 @@ class Model_pengawas extends CI_Model
                 }
             }
             // Perform mutation on the offspring
-            $new_fitness_values = $this->mutasi_coba($new_generation, $data['mutasi'], $data['guru'],$rg,$data);
+            $new_fitness_values = $this->mutasi_coba($new_generation, $data['mutasi'], $data['guru'],$rg,$kl,$data);
             $new_generation = $this->individu;
             $best_chromosome = $this->evaluate($new_generation, $new_fitness_values);
             if ($best_chromosome != null) {
@@ -56,15 +64,16 @@ class Model_pengawas extends CI_Model
         }
     }
     
-    public function inisialisasi($jml_populasi,$guru,$ruangs){
+    public function inisialisasi($jml_populasi,$guru,$ruangs,$kelas){
         // Inisialisasi populasi awal
         $population = array();
         for ($i = 0; $i < $jml_populasi; $i++) {
             $schedule = array();
-                for($j=0;$j<count($ruangs);$j++){
+                for($j=0;$j<count($kelas);$j++){
                     $class = array(
                     0 => $ruangs[$j],
-                    1 => $guru[array_rand($guru)],
+                    1 => isset($guru[$j])?$guru[$j]:$guru[array_rand($guru)],
+                    2 => isset($kelas[$j])?$kelas[$j]:$kelas[array_rand($kelas)],
                     );
                     $schedule[$j] = $class;
                 }
@@ -76,16 +85,19 @@ class Model_pengawas extends CI_Model
         $penalty = 0;
         $jml_ruang = count($data['ruang'])*2;
         $jml_guru = count($data['guru']);
-        for ($i = 0; $i < ($jml_ruang); $i++){
+        $jml_kelas = count($data['kelas']);
+        for ($i = 0; $i < ($jml_kelas); $i++){
             $ruang = $individu[$count_ind][$i][0];
             $guru = $individu[$count_ind][$i][1];
+            $kelas = $individu[$count_ind][$i][2];
             //mapel dalam satu hari berbeda         
-            for ($j = 0; $j < ($jml_ruang); $j++){
+            for ($j = 0; $j < ($jml_kelas); $j++){
                 $ruangB = $individu[$count_ind][$j][0];
                 $guruB = $individu[$count_ind][$j][1];
+                $kelasB = $individu[$count_ind][$j][2];
                 if ($i == $j)
                 continue;
-                if($guru == $guruB && $ruang == $ruangB){
+                if($guru == $guruB && $kelas == $kelasB){
                     $penalty +=1;
                 }
             }  
@@ -267,18 +279,20 @@ class Model_pengawas extends CI_Model
         }
     }
     // Function to perform mutation
-    function mutasi_coba($individual, $mutation_rate, $guru,$ruang,$data) {
+    function mutasi_coba($individual, $mutation_rate, $guru,$ruang,$kelas,$data) {
 
         for ($i = 0; $i < count($individual); $i++) {
-            for ($j = 0; $j < count($ruang); $j++) {
+            for ($j = 0; $j < count($kelas); $j++) {
                 // Check if the class should be mutated
                 if (rand(0, 1) < $mutation_rate) {
                     // Mutate the class by randomly assigning a new mapel, hari, kelas,jam
                    $this->individu[$i][$j][0] = $ruang[$j];
                    $this->individu[$i][$j][1] = $guru[array_rand($guru)];
+                   $this->individu[$i][$j][2] = $kelas[$j];
                 }else{
                     $this->individu[$i][$j][0] = $individual[$i][$j][0];
                     $this->individu[$i][$j][1] = $individual[$i][$j][1];
+                    $this->individu[$i][$j][2] = $individual[$i][$j][2];
                 }
             }
             $fitness[$i]=$this->CekFitness($i,$this->individu,$data);

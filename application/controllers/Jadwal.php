@@ -33,11 +33,46 @@ class Jadwal extends CI_Controller
             } elseif ($usage == 'view') {
                     $table='';
                     $no=1;
+                    $ruangs= [];
+                    $pws= [];
+                    $pengawas=$this->model_master->getPengawas();
+                    $kelas=$this->model_master->getListKelas();
                     $data=$this->model_master->getJadwalArray();
+                    foreach($pengawas as $p){
+                        foreach($kelas as $k){
+                            if($p->kelas == $k->kode_kelas){
+                                $ruangs[$p->kelas][] = $p->nama_ruang;
+                                $pws[$p->kelas][] = $p->nama_guru;
+                            }
+                        }
+                    }
                     foreach ($data as $key => $d) {
+                        
                         $table .= '<tr>
                                     <td>'.$no++.'</td>
                                     <td>'.$d['hari'].'</td>
+                                    <td>'.$d['nama_kelas'].'</td>
+                                    <td>'.$d['jam_mulai'].' - '.$d['jam_selesai'].'</td>
+                                    <td>'.$d['nama_mapel'].'</td>
+                                    <td><p>
+                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#ruang'.$d['id_jadwal'].'" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                        Detail
+                                    </a>
+                                    </p>
+                                    <div class="collapse" id="ruang'.$d['id_jadwal'].'" style="max-height: 120px; overflow:auto;">
+                                        <table class="table table-bordered">
+                                            <tbody>';
+                                            foreach($ruangs as $key => $r){
+                                                if($key == $d['kelas']){
+                                                    for($i=0;$i<count($r);$i++){
+                                                        $table .= '<tr><td>'.$r[$i].'</td><td>'.$pws[$key][$i].'</td></tr>';
+                                                    }
+                                                }
+                                            }
+                                            $table .= '</tbody>
+                                        </table>
+                                    </div>
+                                    </td>
                                 </tr>';
                         $datax = [
                             'table' => $table,
@@ -201,6 +236,7 @@ class Jadwal extends CI_Controller
 				foreach ($data as $d) {
                     $datax['data'][]=[
                         $d->id_pengawas,
+                        $d->nama_kelas,
                         $d->nama_ruang,
                         $d->nama_guru,
                         
@@ -246,6 +282,7 @@ class Jadwal extends CI_Controller
                 $data = [
                     'guru' => $d_i[1],
                     'ruang' => $d_i[0],
+                    'kelas' => $d_i[2],
                 ];
                $datax = $this->db->insert('data_pengawas',$data);
             }
