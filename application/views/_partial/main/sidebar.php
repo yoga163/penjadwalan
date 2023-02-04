@@ -5,6 +5,7 @@
                 <div class="logo">
                     <a href="<?= base_url() ?>pages">
                         <h5>Sistem Penjadwalan</h5>
+                        <h6>SMK N 1 Batang</h6>
                     </a>
                 </div>
                 <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
